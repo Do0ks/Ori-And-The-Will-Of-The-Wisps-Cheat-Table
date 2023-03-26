@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="45">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>70</ID>
+      <Description>"Activate"</Description>
+      <Options moHideChildren="1"/>
+      <Color>FF0080</Color>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>{$lua}
+[ENABLE]
+
+openProcess("oriwotw.exe")
+if process == "oriwotw.exe" then
+   showMessage("Attached")
+else
+    showMessage("Can't find Ori!")
+    synchronize(createTimer,1,memrec.setActive,false)
+end
+
+[DISABLE]
+</AssemblerScript>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>1</ID>
+          <Description>"Health/Mana"</Description>
+          <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+          <Color>0000FF</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+aobscanmodule(healthpointer,GameAssembly.dll,8B 40 10 89 43 44) // should be unique
+alloc(newmemh,$1000,healthpointer)
+alloc(health,8)
+registersymbol(health)
+
+label(codeh)
+label(returnh)
+
+
+health:
+dd 0
+
+newmemh:
+
+codeh:
+  mov [health],rax
+  mov eax,[rax+10]
+  mov [rbx+44],eax
+  jmp returnh
+
+healthpointer:
+  jmp newmemh
+  nop
+returnh:
+registersymbol(healthpointer)
+
+
+[DISABLE]
+
+healthpointer:
+  db 8B 40 10 89 43 44
+
+unregistersymbol(healthpointer)
+unregistersymbol(health)
+dealloc(health)
+dealloc(newmemh)
+
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>23</ID>
+              <Description>"Inf Under Water Breath"</Description>
+              <Color>00FF00</Color>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+//code from here to '[DISABLE]' will be used to enable the cheat
+alloc(newmem,1024,"GameAssembly.dll"+A87C82)
+alloc(UWBREATH,8)
+label(returnhere)
+label(originalcode)
+label(exit)
+
+UWBREATH:
+dd (float)15.99521923
+
+newmem:
+movss xmm6,[UWBREATH]
+
+originalcode:
+movss [rbx+0000039C],xmm6
+
+exit:
+jmp returnhere
+
+"GameAssembly.dll"+A87C82:
+jmp newmem
+nop 3
+returnhere:
+
+
+ 
+ 
+[DISABLE]
+//code from here till the end of the code will be used to disable the cheat
+dealloc(newmem)
+dealloc(UWBREATH)
+"GameAssembly.dll"+A87C82:
+db F3 0F 11 B3 9C 03 00 00
+//movss [rbx+0000039C],xmm6
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>2</ID>
+              <Description>"Health"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <Color>00FF00</Color>
+              <VariableType>Float</VariableType>
+              <Address>[health]+10</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>4</ID>
+              <Description>"Mana"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <Color>00FF00</Color>
+              <VariableType>Float</VariableType>
+              <Address>[health]+18</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>25</ID>
+              <Description>"Cap Health/Mana"</Description>
+              <Options moHideChildren="1"/>
+              <Color>00FF00</Color>
+              <GroupHeader>1</GroupHeader>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>26</ID>
+                  <Description>"Max Health"</Description>
+                  <ShowAsSigned>0</ShowAsSigned>
+                  <VariableType>4 Bytes</VariableType>
+                  <Address>[health]+14</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>3</ID>
+                  <Description>"Max Mana"</Description>
+                  <ShowAsSigned>0</ShowAsSigned>
+                  <VariableType>Float</VariableType>
+                  <Address>[health]+1C</Address>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>55</ID>
+          <Description>"Infinite Jump"</Description>
+          <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+          <Color>0000FF</Color>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>27</ID>
+              <Description>"Ori"</Description>
+              <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+              <Color>FF0000</Color>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobscanmodule(OJump,GameAssembly.dll,F3 0F 10 B3 D8 00 00 00 0F 2F F7 F3) // should be unique
+alloc(newmemj,$1000,OJump)
+alloc(ojumps,8)
+registersymbol(ojumps)
+
+label(codej)
+label(returnj)
+
+
+ojumps:
+dd 0
+
+newmemj:
+
+codej:
+  mov [ojumps],rbx
+  movss xmm6,[rbx+000000D8]
+  jmp returnj
+
+OJump:
+  jmp newmemj
+  nop 3
+returnj:
+registersymbol(OJump)
+
+
+[DISABLE]
+
+
+OJump:
+  db F3 0F 10 B3 D8 00 00 00
+
+unregistersymbol(OJump)
+unregistersymbol(ojumps)
+dealloc(ojumps)
+dealloc(newmemj)
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>46</ID>
+                  <Description>"Inf Jump"</Description>
+                  <ShowAsSigned>0</ShowAsSigned>
+                  <Color>FFFF00</Color>
+                  <VariableType>Float</VariableType>
+                  <Address>[ojumps]+D8</Address>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>47</ID>
+                  <Description>"Cap Jump Height"</Description>
+                  <Options moHideChildren="1" moRecursiveSetValue="1" moDeactivateChildrenAsWell="1"/>
+                  <DropDownList>3:Value
+5:Value
+7:Value
+10:Value
+12:Value
+15:Value
+</DropDownList>
+                  <Color>FFFF00</Color>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>48</ID>
+                      <Description>"BackJumpHeight"</Description>
+                      <ShowAsSigned>0</ShowAsSigned>
+                      <VariableType>Float</VariableType>
+                      <Address>[ojumps]+98</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>49</ID>
+                      <Description>"CrouchJumpHeight"</Description>
+                      <ShowAsSigned>0</ShowAsSigned>
+                      <VariableType>Float</VariableType>
+                      <Address>[ojumps]+9C</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>50</ID>
+                      <Description>"MoveFwd/BckJumpHeight"</Description>
+                      <ShowAsSigned>0</ShowAsSigned>
+                      <VariableType>Float</VariableType>
+                      <Address>[ojumps]+A4</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>51</ID>
+                      <Description>"3rdJumpHeight"</Description>
+                      <ShowAsSigned>0</ShowAsSigned>
+                      <VariableType>Float</VariableType>
+                      <Address>[ojumps]+B4</Address>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>52</ID>
+                      <Description>"2ndJumpHeight"</Description>
+                      <ShowAsSigned>0</ShowAsSigned>
+                      <VariableType>Float</VariableType>
+                      <Address>[ojumps]+B8</Address>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>68</ID>
+              <Description>"Kuro"</Description>
+              <Options moHideChildren="1" moDeactivateChildrenAsWell="1"/>
+              <Color>FF0000</Color>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+
+aobscanmodule(kurojump,GameAssembly.dll,89 83 84 00 00 00 48 83 C4 40 5B C3 CC) // should be unique
+alloc(newmem,$1000,kurojump)
+alloc(kurojumps,8)
+registersymbol(kurojumps)
+
+label(code)
+label(return)
+
+kurojumps:
+dd 0
+
+newmem:
+
+code:
+  mov [kurojumps],rbx
+  mov [rbx+00000084],eax
+  jmp return
+
+kurojump:
+  jmp newmem
+  nop
+return:
+registersymbol(kurojump)
+
+[DISABLE]
+
+kurojump:
+  db 89 83 84 00 00 00
+
+unregistersymbol(kurojump)
+dealloc(newmem)
+dealloc(kurojumps)
+unregistersymbol(kurojumps)
+
+{
+// ORIGINAL CODE - INJECTION POINT: GameAssembly.dll+1235B50
+
+GameAssembly.dll+1235B23: 90                          - nop 
+GameAssembly.dll+1235B24: C6 05 C9 CB 56 03 01        - mov byte ptr [GameAssembly.dll+47A26F4],01
+GameAssembly.dll+1235B2B: 48 8B 0D 76 C7 50 03        - mov rcx,[GameAssembly.dll+47422A8]
+GameAssembly.dll+1235B32: F6 81 27 01 00 00 02        - test byte ptr [rcx+00000127],02
+GameAssembly.dll+1235B39: 74 0E                       - je GameAssembly.dll+1235B49
+GameAssembly.dll+1235B3B: 83 B9 D8 00 00 00 00        - cmp dword ptr [rcx+000000D8],00
+GameAssembly.dll+1235B42: 75 05                       - jne GameAssembly.dll+1235B49
+GameAssembly.dll+1235B44: E8 47 86 03 FF              - call GameAssembly.dll+26E190
+GameAssembly.dll+1235B49: 33 C9                       - xor ecx,ecx
+GameAssembly.dll+1235B4B: E8 10 18 89 FF              - call SeinDoubleJump.get_ExtraJumpsAvailable
+// ---------- INJECTING HERE ----------
+GameAssembly.dll+1235B50: 89 83 84 00 00 00           - mov [rbx+00000084],eax
+// ---------- DONE INJECTING  ----------
+GameAssembly.dll+1235B56: 48 83 C4 40                 - add rsp,40
+GameAssembly.dll+1235B5A: 5B                          - pop rbx
+GameAssembly.dll+1235B5B: C3                          - ret 
+GameAssembly.dll+1235B5C: CC                          - int 3 
+GameAssembly.dll+1235B5D: CC                          - int 3 
+GameAssembly.dll+1235B5E: CC                          - int 3 
+GameAssembly.dll+1235B5F: CC                          - int 3 
+KuDoubleJump.LockForDuration: 40 53                       - push rbx
+GameAssembly.dll+1235B62: 48 83 EC 60                 - sub rsp,60
+GameAssembly.dll+1235B66: 48 C7 44 24 20 FE FF FF FF  - mov qword ptr [rsp+20],FFFFFFFFFFFFFFFE
+}
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>69</ID>
+                  <Description>"Inf Jump"</Description>
+                  <ShowAsSigned>0</ShowAsSigned>
+                  <Color>FFFF00</Color>
+                  <VariableType>Float</VariableType>
+                  <Address>[kurojumps]+84</Address>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>36</ID>
+          <Description>"Insta Kill Enemies"</Description>
+          <Options moAlwaysHideChildren="1"/>
+          <Color>0000FF</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+alloc(newmem,2048,"GameAssembly.dll"+449EA0)
+label(returnhere)
+label(originalcode)
+label(exit)
+
+newmem:
+//cmp [rcx+40],1
+//jne originalcode
+//mov [rcx+40],(float)-3.199998856
+mov [rcx+40],(float)0
+movss xmm0,[rcx+40]
+
+originalcode:
+//movss xmm0,[rcx+40]
+
+exit:
+jmp returnhere
+
+"GameAssembly.dll"+449EA0:
+jmp newmem
+returnhere:
+
+
+[DISABLE]
+dealloc(newmem)
+unregistersymbol(offsetpointer)
+"GameAssembly.dll"+449EA0:
+db F3 0F 10 41 40
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>39</ID>
+              <Description>"Enemy Health Address"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>GameAssembly.dll+449EA0</Address>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>60</ID>
+          <Description>"Currencies"</Description>
+          <Options moHideChildren="1"/>
+          <Color>00FF00</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+
+aobscanmodule(currency,GameAssembly.dll,8B 40 30 48 83 C4 48 C3 E8 5A) // should be unique
+alloc(newmem,$1000,currency)
+alloc(currencies,8)
+registersymbol(currencies)
+
+label(code)
+label(return)
+
+currencies:
+db 0
+
+newmem:
+
+code:
+  mov [currencies],rax
+  mov eax,[rax+30]
+  add rsp,48
+  jmp return
+
+currency:
+  jmp newmem
+  nop 2
+return:
+registersymbol(currency)
+
+[DISABLE]
+
+currency:
+  db 8B 40 30 48 83 C4 48
+
+unregistersymbol(currency)
+dealloc(newmem)
+dealloc(currencies)
+unregistersymbol(currencies)
+
+{
+// ORIGINAL CODE - INJECTION POINT: GameAssembly.dll+1022759
+
+GameAssembly.dll+102273B: 48 8B 48 30     - mov rcx,[rax+30]
+GameAssembly.dll+102273F: 48 85 C9        - test rcx,rcx
+GameAssembly.dll+1022742: 74 1D           - je GameAssembly.dll+1022761
+GameAssembly.dll+1022744: 33 D2           - xor edx,edx
+GameAssembly.dll+1022746: E8 05 5C F1 FF  - call GameAssembly.dll+F38350
+GameAssembly.dll+102274B: 48 85 C0        - test rax,rax
+GameAssembly.dll+102274E: 74 23           - je GameAssembly.dll+1022773
+GameAssembly.dll+1022750: 48 8B 40 18     - mov rax,[rax+18]
+GameAssembly.dll+1022754: 48 85 C0        - test rax,rax
+GameAssembly.dll+1022757: 74 14           - je GameAssembly.dll+102276D
+// ---------- INJECTING HERE ----------
+GameAssembly.dll+1022759: 8B 40 30        - mov eax,[rax+30]
+// ---------- DONE INJECTING  ----------
+GameAssembly.dll+102275C: 48 83 C4 48     - add rsp,48
+GameAssembly.dll+1022760: C3              - ret 
+GameAssembly.dll+1022761: E8 5A E4 26 FF  - call GameAssembly.dll+290BC0
+GameAssembly.dll+1022766: CC              - int 3 
+GameAssembly.dll+1022767: E8 54 E4 26 FF  - call GameAssembly.dll+290BC0
+GameAssembly.dll+102276C: CC              - int 3 
+GameAssembly.dll+102276D: E8 4E E4 26 FF  - call GameAssembly.dll+290BC0
+GameAssembly.dll+1022772: CC              - int 3 
+GameAssembly.dll+1022773: E8 48 E4 26 FF  - call GameAssembly.dll+290BC0
+GameAssembly.dll+1022778: CC              - int 3 
+}
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>61</ID>
+              <Description>"Spirit Lights"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <Color>008000</Color>
+              <VariableType>4 Bytes</VariableType>
+              <Address>[currencies]+30</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>64</ID>
+              <Description>"Gorlek Ore"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <Color>008000</Color>
+              <VariableType>4 Bytes</VariableType>
+              <Address>[currencies]+34</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>65</ID>
+              <Description>"KeyStones"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <Color>008000</Color>
+              <VariableType>4 Bytes</VariableType>
+              <Address>[currencies]+28</Address>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>66</ID>
+              <Description>"MapStones"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <Color>008000</Color>
+              <VariableType>4 Bytes</VariableType>
+              <Address>[currencies]+2C</Address>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+  </CheatEntries>
+  <CheatCodes>
+    <CodeEntry>
+      <Description>Change of cmp byte ptr [GameAssembly.dll+47A26EA],00</Description>
+      <AddressString>GameAssembly.dll+123AA59</AddressString>
+      <Before>
+        <Byte>83</Byte>
+        <Byte>CC</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+      </Before>
+      <Actual>
+        <Byte>80</Byte>
+        <Byte>3D</Byte>
+        <Byte>8A</Byte>
+        <Byte>7C</Byte>
+        <Byte>56</Byte>
+        <Byte>03</Byte>
+        <Byte>00</Byte>
+      </Actual>
+      <After>
+        <Byte>75</Byte>
+        <Byte>50</Byte>
+        <Byte>48</Byte>
+        <Byte>8B</Byte>
+        <Byte>05</Byte>
+      </After>
+    </CodeEntry>
+    <CodeEntry>
+      <Description>Change of addss xmm6,[rax+18]</Description>
+      <AddressString>7FFD1EFA0017</AddressString>
+      <Before>
+        <Byte>1E</Byte>
+        <Byte>FD</Byte>
+        <Byte>7F</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+      </Before>
+      <Actual>
+        <Byte>F3</Byte>
+        <Byte>0F</Byte>
+        <Byte>58</Byte>
+        <Byte>70</Byte>
+        <Byte>18</Byte>
+      </Actual>
+      <After>
+        <Byte>E9</Byte>
+        <Byte>5E</Byte>
+        <Byte>BA</Byte>
+        <Byte>A1</Byte>
+        <Byte>00</Byte>
+      </After>
+    </CodeEntry>
+    <CodeEntry>
+      <Description>dast 1:jmp GameAssembly.dll+2C36135</Description>
+      <AddressString>GameAssembly.dll+2C360AE</AddressString>
+      <Before>
+        <Byte>42</Byte>
+        <Byte>01</Byte>
+        <Byte>89</Byte>
+        <Byte>43</Byte>
+        <Byte>20</Byte>
+      </Before>
+      <Actual>
+        <Byte>E9</Byte>
+        <Byte>82</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+      </Actual>
+      <After>
+        <Byte>0F</Byte>
+        <Byte>B6</Byte>
+        <Byte>84</Byte>
+        <Byte>24</Byte>
+        <Byte>C8</Byte>
+      </After>
+    </CodeEntry>
+    <CodeEntry>
+      <Description>Change of cmp byte ptr [rbx+00000120],00</Description>
+      <AddressString>GameAssembly.dll+6E0B77</AddressString>
+      <Before>
+        <Byte>84</Byte>
+        <Byte>56</Byte>
+        <Byte>01</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+      </Before>
+      <Actual>
+        <Byte>80</Byte>
+        <Byte>BB</Byte>
+        <Byte>20</Byte>
+        <Byte>01</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+      </Actual>
+      <After>
+        <Byte>0F</Byte>
+        <Byte>84</Byte>
+        <Byte>AB</Byte>
+        <Byte>00</Byte>
+        <Byte>00</Byte>
+      </After>
+    </CodeEntry>
+  </CheatCodes>
+  <UserdefinedSymbols/>
+</CheatTable>
