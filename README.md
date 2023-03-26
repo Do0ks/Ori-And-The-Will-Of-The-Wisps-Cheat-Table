@@ -1,6 +1,6 @@
 # Ori-And-The-Will-Of-The-Wisps-Cheat-Table  
   
-![Cheat Table](https://imgur.com/a/G1y8ZLs)  
+![Cheat Table](https://imgur.com/EV0olRc)  
   
 <b>Discription:</b>  
   
