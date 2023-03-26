@@ -1,4 +1,4 @@
-# Ori-And-The-Will-Of-The-Wisps-Cheat-Table  
+# Ori-And-The-Will-Of-The-Wisps-Cheat-Table(Cheat-Engine)  
   
 ![Cheat Table](https://i.imgur.com/EV0olRc.png)  
   
